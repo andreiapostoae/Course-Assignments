@@ -1,0 +1,30 @@
+Citirea pentru toate subpunctele s-a realizat citind din fisierul input mai intai prima linie, din care se extrageau m si n, iar mai apoi linie cu linie pana la final, folosindu-ma de %http://www.mathworks.com/matlabcentral/answers/71374-how-to-read-a-text-file-line-by-line
+Apoi din fiecare linie, adica set de valori, am extras vectorii x si y corespunzatori punctelor respective. La functiile F3 si FB am ordonat punctele astfel incat vectorul x sa fie crescator (corespunzator forumului). Puteam face acest lucru si pentru F1 si F2, dar inputul era ok.
+Apoi am format vectorul k pentru fiecare functie cu m valori intre prima si ultima valoare a lui x si dupa anumite procedee am aflat practic f(k), notat cu w la mine, urmand sa fac un simplu plot(w,k) la sfarsit.
+Pentru F2, F3 si FB a trebuit sa am grija pe ce interval plotez, deoarece in functie de x, coordonatele a si b, respectiv a,b,c,d difera - vezi repozitionarea in cod sursa.
+
+
+Procedee folosite pentru fiecare functie:
+
+F1) M-am folosit de functia Neville(x,y,val), unde x si y sunt vectorii de referinta ai punctelor cunoscute, iar val este valoarea in care functia calculeaza f(val). In implementaria Neville.m m-am folosit de laborator, avand grija la indicii (in laborator plecau de la 0).
+
+F2) Deoarece un spline liniar are formula S(x)=a*x+b, pentru fiecare doua puncte cunoscute a trebuit sa calculez a si b care sa determine dreapta formata de cele doua puncte. Bineinteles, rezultatul pentru fiecare punct x dintr-un interval [xi,xi+1) este a*x+b.
+
+F3 + FB) IMPORTANT!!! 
+Cand m-am apucat de tema, stiam doar ce am facut la laborator legat de spline cubice si de asemenea aveam notitele de la curs. In niciuna din cele doua nu exista o metoda directa de a afla parametrii a,b,c,d din Si(x)=a*(x-xi)^3+b*(x-xi)^2+c*(x-xi)+d, asa ca m-am apucat sa fac de mana cateva experimente si mi-am inventat propria metoda de a-i afla. Am aflat abia ulterior ca in PDF-ul de pe cs.curs.pub.ro corespunzator prezentarii cursului, existau aceste formule, si apoi aflarea a,b,c,d se rezumau la utilizarea algoritmului lui Thomas. 
+Asadar, algoritmul meu consta in rezolvarea unui sistem de forma A*z=b, unde A este o matrice de dimensiuni 4n*4n, n+1 reprezentand numarul de puncte cunoscute din input.
+Am dedus cum trebuie sa arate matricea A chiar din ecuatiile cunoscute:
+-primele n linii sunt corespunzatoare primelor n ecuatii: Si(xi)=f(xi)=yi
+-urmatoarea n linii sunt corespunzatoare urmatoarelor n ecuatii: Si(xi+1)=f(xi+1)
+-urmatoarele n-1 linii sunt corespunzatoare urmatoarelor n-1 ecuatii: Si'(xi+1)=Si+1'(xi+1)
+-urmatoarele n-1 linii sunt corespunzatoare urmatoarelor n-1 ecuatii: Si''(xi+1)=Si+1''(xi+1)
+-ultimele doua linii sunt corespunzatoarelor tipului de spline cubice folosite:
+	*pentru naturale: S0''(x0)=0, Sn-1''(xn)=0
+	*pentru tensionate: S0''(x0)=f'(x0) si Sn-1''(xn)=f'(xn)
+Nu consider ca are rost sa intru in detalii cum arata matricea, deoarece se poate deduce din program (eu am dedus-o pe hartie, mi-ar fi cel mai simplu sa arat in caz de este nevoie).
+Coloana b va contine in ordine valorile dela y0 la yn-1 si apoi de la y1 la yn, dupa care zerouri, iar coloana de solutii z contine in ordine valorile [a0 b0 c0 d0 a1 b1 c1 d1 ... an-1 bn-1 cn-1 dn-1]'.
+A fost alegerea mea pentru metoda de rezolvarea a sistemului, pe forum specificandu-se ca avem voie cu orice metoda. Deoarece nu am vrut sa "trisez" si sa folosesc functii din octave, de genul mldivide, am rezolvat prin folosirea functiei invgauss.m, care calculeaza inversa unei matrice utilizandu-se de eliminarea Gaussiana. A urmat apoi z=invgauss(A)*b, de unde si parametrii.
+Dupa aflarea parametrilor, am aplicat acelasi procedeu ca la subpunctele anterioare, rezultand graficele dorite.
+
+Mentionez ca uneori am avut probleme cu toolkitul grafic default de la octave, numit fltk, asa ca am folosit comanda graphics_toolkit("gnuplot") si a functionat cum trebuie. Aceasta e posibil sa fie doar o eroare interna insa, deoarece folosesc accelerare 3D pe masina virtuala si primesc warninguri legate de OpenGL.
+ 

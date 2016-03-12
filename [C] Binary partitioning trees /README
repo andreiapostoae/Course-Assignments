@@ -1,0 +1,18 @@
+/* APOSTOAE Andrei - 311CB */
+Despre structurile folosite:
+Am decis sa folosesc o structura numita coord (coordonata) ce caracterizeaza parametrii (a,b,c) a unei drepte de coordonate ax+by+c=0. Pentru usurarea notatiei, punctele din plan de coordonate (x,y) au fost utilizate cu ajutorul aceleiasi structuri, doar ca a treia valoare este 0 si nu este utilizata.
+Apoi, pentru arbore, am modificat structura de la curs. Practic, informatia de baza ce un nod o contine este chiar structura coord. (poate ar fi fost mai inspirat sa o numesc info). A trebuit de asemenea pentru rezolvare sa mai iau un intreg "indice" si un caracter "tip". Tipul unui nod poate fi de trei feluri: 'd'=dreapta, 'p'=punct(regiune), 'x'=placeholder. Notarea aceasta m-a ajutat la identificarea fiecarui nod. (am folosit functia de afisare de la laborator, putin modificata).
+
+Implementarea mainului:
+A trebuit sa retin coordonatele dreptelor citite din fisier, precum si a punctelor, in vectori alocati dinamic carora le stiu dimensiunile (N si M). Pentru noduri, in schimb, numarul maxim putea fi 2^N-1, dar am deci sa aloc static, deoarece in teste N nu depaseste 5 oricum.
+Pentru ambele moduri am initiat arborele cu dreapta d0. Apoi am facut distinctia dintre modurile de lucru, dar procesul de baza a fost: s-au adaugat dreptele, s-au adaugat punctele, s-a frealizat fill-ul.
+Apoi urmeaza ultima parte, parte comuna ambelor moduri. Mai intai s-a afisat parcurgerea SDR a arborelui (postordine).
+Apoiunctele de interogare nu au fost memorate, ci citite pe rand si procesate, astfel incat sa se afiseze regiunea corespunzatoare.
+La sfarsit s-a eliberat cu succes memoria.
+
+Despre fill:
+La fel cum este precizat si in descrierea functiei, functia fill cauta recursiv toate nodurile care au cel mult un fiu si au ca tip 'd', adica sunt drepte, si le introduce acolo unde nu exista informatie deja noduri de tip 'p', dar cu indicele -1, reprezentand (null). Astfel se introduc punctele care nu reprezinta nicio regiune.
+
+Despre placeholder:
+In implementarea modului 1 a trebuit sa ma folosesc cumva de informatiile despre existenta fiului stanga si fiului dreapta ale tuturor nodurilor. Astfel, la introducerea fiecarui nod nou reprezentand o dreapta, in functie de existenta fiilor, introduceam placeholder-uri pentru a distinge cazul in care un nod exista dar nu este completat si asteapta sa fie, faza de unul care nu exista. 
+Inserarea a fost realizata parcurgand arborele in postordine, inlocuindu-se de fiecare data fiecare placeholder gasit cu dreapta ce trebuia introdusa. Acest lucru garanteaza transformarea tuturor placeholder-urilor in drepte.

@@ -1,0 +1,20 @@
+In implementarea temei am folosit mai multe functii din laboratorul de liste generice si din cursul de tabele hash:
+-definirea structurilor TCelulaG, *TLG, **ALG, TD
+-DistrugeLG pentru distrugerea listelor generice
+-InsLG pentru inserarea unui element intr-o lista generica
+-InitTD pentru initializarea unei tabele hash
+-DistrugeTD pentru distrugerea unei tabele hash
+-Afisare si AfiEl modificate pentru afisarea tabelei hash in main (nu are legatura cu outputul)
+-inserarea ordonata
+
+Functia de dispersie a problemei a fost implementata prin adunarea fiecarui caracter sub codul lui ASCII la o suma, dupa care s-a executat operatia mod la un numar m, caruia ulterior, la apelare, ii va fi luat locul de marimea tabelei.
+
+Functia put: am tinut cont de faptul ca daca un adresa (key) unui element este deja in tabela hash, atunci se returneaza tabela nemodificata.
+Apoi am inserat ordonat, iar atunci cand bucketul era gol si trebuia sa inserez am folosit InsLG deoarece nu mergea acelasi algoritm.
+
+Functiile get, find, print, print_bucket au fost usor de implementat - unde a fost cazul, am determinat mai intai bucketul in care trebuie cautat argumentul cu ajutorul functiei hash.
+
+Functia remove are doua cazuri: atunci cand elementul sters se afla pe prima pozitie si atunci cand se afla pe oricare alta pozitie. Functia returneaza 1 in caz de succes si 0 in caz contrar, important pentru a satisface testele.
+
+Algoritmul de citire linie cu linie folosit a fost inspirat de la: http://stackoverflow.com/questions/3501338/c-read-file-line-by-line
+

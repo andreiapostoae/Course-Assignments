@@ -1,0 +1,29 @@
+Problema 1
+a) Am citit matricea din fisier impreuna cu stringul, dupa care am transformat stringul din litere in numere corespunzatoare si redistribuit numerele intr-o matrice cu n coloane.
+Acest lucru imi permite sa codific cate n caractere odata, si in acelasi timp imi faciliteaza inmultirea dintre matricea cheie si cate un vector-rand. Rezultatul fiecare astfel de inmultiri va fi un alt vector-rand, caruia i se aplica modulo 29, iar acesti vectori sunt pusi cap la cap in ordine, formandu-se un sir de numere, care va fi transformat ulterior inapoi in sir de caractere si astfel se obtine sirul final care este afisat.
+
+b) Procedeul acestei probleme este extrem de asemanator cu cel de la subpunctul anterior. Principala diferenta este ca trebuie calculata inversa matricei modulo 29, care nu se calculeaza foarte simplu. 
+Algoritmul pe care l-am folosit se bazeaza pe algoritmul de calcul al matricei inverse folosind metoda Gauss-Jordan. In loc de impartire la primul elemente de pe fiecare rand pentru a obtine forma RREF, inmultim acel rand cu inversul elementului respectiv mod 29, pentru a obtine primul element de pe acel rand 1.
+In rest am facut adaugari in algoritmul de inversare cu modulo 29 pentru a simplifica calculele. Acest pas putea fi facut si la sfarsit.
+
+c) Pentru fiecare mie de caractere ce urmeaza a fi codificata, se bordeaza pana la un numar de caractere divizibile cu n, dupa care se grupeaza in n coloane caracterele transformate in numere si se aplica procedeul de codificare aseamanator cu subpunctul a.
+Partea "tricky" a problemei a fost sa gasim matricea de codificare, care se regaseste intr-un subprogram. Pentru x caractere ce urmeaza a fi codificate, se inmulteste matricea eye(x+1) care are k-ul pe ultima coloana in afara de ultimul element, care ramane 1, cu matricea coloana la care se adauga ultimul element 1.
+Dupa codificarea fiecarui grup de 1000+rest elemente, se incrementeaza k-ul si se adauga primele 1000 in vectorul final.
+Se procedeaza asemanator si pentru ultimul grup de caractere, care cel mai probabil este un rest cu 0<n<1000 caractere, apoi se transforma vectorul final de numere in vector de caractere si se afiseaza.
+
+
+Problema 2
+Am folosit 4 algoritmi in rezolvarea problemei:
+-calcularea produsului a doua matrice utilizand metoda lui Strassen - link in cod
+-calcularea inversei prin metoda partitionarii - laboratorul 2
+-calcularea functiei exponentiare in timp logaritmic (foarte eficient) - exponentiating by squaring
+-calcularea inversei utilizand metoda Gauss-Jordan - implementata de mine
+
+Partile "tricky" au fost urmatoarele:
+-pentru algoritmul lui Strassen, bordarea cu zerouri pana am ajuns la matrice de 2^n*2^n, iar apoi intoarcerea rezultatului fara bordarea initiala
+-utilizarea inversei cu Gauss intr-un timp decent, deoarece functia de inversare arhicunoscuta de pe internet imi incetinea programul enorm
+-efectuarea in timp logaritmic a ridicarii la putere
+-gasirea unei limite inferioare unde ma opresc cu inmultirile, respectiv inversarea; am ales 32x32 deoarece asa ne-a fost permis pe forum
+
+Detalii legate de procedeele folosite se afla in program, dar practic tot ce am facut a fost inversare si apoi ridicare la putere, avand grija ca toate inmultirile sa fie efectuate cu algoritmul lui Strassen.
+

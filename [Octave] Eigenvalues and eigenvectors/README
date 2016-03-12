@@ -1,0 +1,27 @@
+ValoriPolinoame: (15/15)
+-am respectat algoritmul din descrierea generala
+
+NrValProprii:
+-daca valorile consecutive ale polinomului erau de semn opus, atunci se incrementa numarul de valori proprii
+-daca polinomul =era 0 si daca valoarea anterioara si valoarea urmatoare au acelasi semn, se incrementeaza de 2 ori numarul, iar daca nu au acelasi semn, doar o data
+
+LimiteValProprii:
+-am folosit algoritmul de la descriere generala, nimic deosebit
+
+IntervaleValProprii:
+-am respectat algoritmul tinand cont ca uneori m-ul (adica numarul de valori a caror intervale le caut) uneori poate fi mai mare decat dimensiunea matricei, deci va trebui redus la aceasta (if m>length(d) m=length(d))
+
+CalculezValProprii: 
+-la fiecare iteratie am lucrat cu doua valori pentru lambda: stanga si dreapta
+-pentru a vedea daca o valoare oarecare este valoare proprie, trebuie verificat daca valoarea ultimului polinom din ValoriPolinoame in acel punct este 0 (mai corect spus, modulul ei este <eps)
+-din moment ce intervalele au fost gasite corect, se poate presupune ca valoarea polinoamelor pentru capetele fiecarui interval gasit cu IntervaleValProprii sunt de semne diferite, astfel incat sa existe o radacina
+-tinand cont de observatia de mai sus, am calculat valoarea ultimului polinom in mijlocul intervalului si i-am verificat semnul pentru a micsora intervalul, conform pasilor de la metoda bisectiei
+-am repetat procesul pana s-a indeplinit conditia de oprire
+
+PutereInv: 
+-pentru implementare am avut nevoie de mai multi algoritmi: 
+1) algoritmul lui thomas pentru rezolvarea sistemelor de ecuatii (A*x=b, unde A tridiagonala) - luat din laborator
+2) propriul algoritm de inmultire a unui vector cu o matrice tridiagonala, lucrand doar cu vectorii diagonalei si supradiagonalei
+3) algoritmul metodei puterii inverse - luat tot din laborator
+4) propriul algoritm de inmultire a unei matrice tridiagonale cu un vector coloana, lucrand doar cu vectorii diagonalei si supradiagonalei
+-conditia de oprire este luata de pe forum: norm(A*vector_propriu  - valoare_proprie*vector_propriu) <eps

@@ -1,0 +1,16 @@
+Implementarea a fost gandita in felul urmator:
+1. Se citesc pe rand liniile din fisierul de input. Aceasta este forma expresiei in infix.
+2. Se transforma expresia din infix in postfix, rezultatul fiind un vector de siruri de caractere, fiecare sir reprezentand un element al expresiei (sunt siruri de caractere si nu doar caractere deoarece variabilele pot avea si nume cu mai mult de un caracter)
+3. Printr-un algoritm usor de inteles, explicat foarte clar pe http://www.dreamincode.net/forums/topic/37428-converting-and-evaluating-infix-postfix-and-prefix-expressions-in-c/, se formeaza un arbore din expresia in postfix. Nodurile pe langa fii, au doua campuri: valoare si tip. Tipuri: E - expresie si e corespunzatoare operatorilor binari, F - factori, T - Termeni, N - Ternari. De notat e ca prin valoare vreau sa spun de fapt numele elementului. De exemplu pentru o variabila, campul valoare ii va contine numele, nu valoarea efectiva, pe cand pentru o constanta, campul ii va retine numele, dar implicit si valoarea efectiva.
+4. Pentru primul task se executa o parcurgere in latime. Aceasta parte mi s-a parut cea mai tricky din problema deoarece m-am gandit mult cum as putea sa ma folosesc de arborele de parsare la rezolvare. Pentru fiecare arbore, scriu primele doua randuri normal, pe nivele, la modul ca "scriu ce vad". Apoi caut sa inlocuiesc de fiecare data cand vad "E" cu ce citesc pe urmatorul rand, uitandu-ma la fii.
+Exemplu practic: var=nr*9+((nr>2)?nr:9) produce urmatorul output:
+E
+T=E (si se uita la ce urmeaza pe nivelul urmator)
+T=E+E (si se uita la ce urmeaza pe nivelul urmator, vazand ca la prima expresie este o inmultire, si nu una de expresii pentru ca fii primei expresii(adica fii lui *) sunt frunze, deci e o inmultire de factori; la fel procedeaza si pentru al doilea E, uitandu-se mereu la fii si daca acestia sunt frunze pentru a sti daca sa scrie E sau T/N/F)
+T=(F*F)+(E:N) etc...
+5. Pentru al doilea task, nu se foloseste arborele de parsare intrucat ar complica mult rezolvarea. Practic, se verifica daca ecuatia este valida (in stanga se afla o variabila, iar in dreapta nu exista variabile nedeclarate), iar daca este, variabila din stanga este retinuta(fara valoare) intr-un vector de variabile, urmand evaluarea acesteia la pasul urmator. Daca nu e valida, se afiseaza eroarea corespunzatoare.
+6. Pentru al treilea task, evaluarea a fost destul de simpla, datorita existentei arborelui de parsare. A trebuit sa ma folosesc de valoarea MAX_INT care tine loc de boolean in cazul operatiei ternare. Aceasta este singura metoda eleganta si nehardcodata de a rezolva taskul. Sunt constient ca are un dezavantaj, in cazul in care in input exista efectiv valoarea lui MAX_INT.
+ 
+
+Pentru rulare automata:
+N-am gasit nicio solutie de a rula o comanda de genul "make run input", unde input e numele primului argument, adica a fisierului de intrare. Prin urmare, pentru a rula make run cu parametru, comanda arata astfel: make ARGS="input" run

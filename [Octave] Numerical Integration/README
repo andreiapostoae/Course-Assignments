@@ -1,0 +1,15 @@
+TASK 1:
+Pentru metoda trapezelor, am folosit formula corespunzatoare deoarece e directa si corecta.
+Pentru metoda Simpson, am incercat sa "fidelizez" putin solutia, deoarece in unele cazuri, am considerat ca ariile se comporta diferit, mai exact in cazurile in care (x(i+1)<x(i) si x(i+1)<x(i+2)) si (x(i+1)>x(i) si x(i+1)>x(i+2)), unde am folosit tot metoda trapezelor - cazurile 3,4. Acest lucru nu a avut un impact important asupra rezultatului deoarece e vorba de un numar finit de valori. 
+In fine, formula de baza folosita pentru o arie data de trei puncte consecutive este: I=(h/3)*(y(i)+4*y(i+1)+y(i+2)), unde h=(1/2)*(x(i+2)-x(i)).
+
+TASK 2:
+M-am inspirat din http://en.wikipedia.org/wiki/Centroid, in care exista o formula pentru centru de greutate a unui poligon cunoscand un set de puncte.
+
+TASK 3:
+Voi numi "zona" partea avionului cuprinsa intre doua sectiuni consecutive.
+Primele doua cerinte au fost rezolvate cu usurinta folosindu-ma de taskurile 1 si 2, doar citirea fiind in plus fata de acestea.
+Cand am memorat ariile ce urmau afisate, am calculat si x_centroid si y_centroid pentru fiecare sectiune transversala, retinandu-le.
+Apoi, pentru volum, am facut produsul dintre aria medie a doua sectiuni transversale consecutive si diferenta de z dintre doua zone consecutine. Masa rezulta din produsul dintre densitatile fiecarei zone si volumul corespunzator.
+Pentru centru de masa, metoda mea a constat in folosirea unor medii ponderate. Ideea de baza a fost determinarea centrului de masa pentru fiecare zona, si apoi calculul unei medii ponderate dintre coordonatele acestui punct si masele fiecarei zone dintre sectiuni. Pentru determinarea x-ului centrului de masa dintre doua zone de exemplu, am folosit formula x=(x(i)*A(i)+x(i)*A(i+1))/2*A, unde A(i) este aria sectiunii cu numarul i si A este media aritmetica dintre A(i) si A(i+1). Apoi pentru a determina x centrului de masa a intregului avion, am folosit formula x=(x(1)*m(1)+x(2)*m(2)+...x(n)*m(n))/(m(1)+m(2)+...+m(n)). m(i) reprezinta masa zonei i.
+Analog am procedat si pentru y, iar pentru z nu a mai fost nevoie de primul pas deoarece este constat pe zone.

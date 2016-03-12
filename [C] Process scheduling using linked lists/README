@@ -1,0 +1,15 @@
+Functii folosite in rezolvarea problemei:
+-Push, Pop pentru stiva
+-InsQ (inserare ordonata), ExtrQ=Pop pentru coada (sunt aceleasi pentru ca ambele sunt de tipul TLG, iar baza stivei se afla la sfarsit)
+-AfisareCoada - pentru a afisa coada in fisier
+-DistrugereLG - distruge lista generica, respectiv si stive si cozi
+-end
+-wait
+-event
+
+Cu exceptia functiei InsQ care este implementata cu parcurgere de liste, toate functiile sunt pe baza Push si Pop si a utilizarii unor stive auxiliare.
+Functiile sunt explicate pe larg in codul sursa.
+Pentru start si afisarea unei stive in fisier, implementarea a fost facuta direct in main.
+Am eliberat si distrus tot ce am alocat folosind functia de distrugere si doua free-uri in functia end, astfel avand 0 memory leak.
+De asemenea, am folosit macrouri pentru a evita incarcarea inutila a liniilor cu elemente de genul ((TProces*)(x->info))->prioritate.
+
