@@ -1,0 +1,19 @@
+/* APOSTOAE Andrei-Alexandru 321CB */
+Am implementat aceasta tema facand pattern matching pe structurile date, anume Expr si Prog.
+
+Pentru a putea trata erorile si pentru a simplifica rezolvarea, am definit 4 variabile globale, cu rolul de a trata diferite cazuri:
+a) noReturn => daca programul intoarce aceasta valoare, atunci lipseste returnul
+b) notFound => daca programul intoarce aceasta valoare, atunci exista (cel putin) o variabila neinitializata in program
+c) true => tine loc de True, dar pentru a nu intoarce un Either Int Bool, am ales sa codific starea
+d) false => tine loc de False din acelasi motiv
+
+Pentru a retine variabilele impreuna cu valorile lor, le introduc intr-o lista de perechi (String, Int), asemanatoare unui dictionar. Cand caut o valoare, desi poate sa apara de mai multe ori, intorc prima aparitie, adica ultima valoare calculata corect. Daca o variabila nu este gasita in aceasta lista, atunci se intoarce notFound.
+
+Apoi am avut nevoie de functie auxiliara, numita evalAux, care primeste un program si o lista si returneaza o lista updatata (daca e cazul) si un intreg care are rol de error code.
+Acord prioritate cautarii erorii pentru variabila neinitializata, si apoi pentru missing return.
+
+evalAdt va avea rolul sa aplice evalAux pe aceiasi parametri + lista goala, iar daca noReturn sau notFound sunt returnate, atunci se returneaza eroarea respectiva sub forma de string, si nu int, prin folosirea Eitherului.
+
+Implementarile lui Eq, Seq, If, Return au fost relativ simple, dificultatea aparand intr-o oarecare masura la While, unde a trebuit sa gandesc functional. Astfel, daca expresia primita ca parametru este adevarata, evaluez recursiv acelasi while, dar cu lista updatata.
+
+
