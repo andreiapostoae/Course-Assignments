@@ -1,0 +1,11 @@
+CBDankBots
+Apostoae Andrei-Alexandru
+Chiriac George-Octavian
+Chirita Alexandru
+Petrescu Andrei-Madalin 
+321CB
+
+Am translatat codul din Java de la etapa 2 in C, pentru a obtine timpi mai buni si implicit adancime mai mare.
+Am optimizat updateField, care acum face update doar la macro, iar ultima casuta completata este stearsa dupa iesirea din recursivitate, si macroul face o copie dupa macroul vechi.
+Am schimbat si alphabeta, deoarece am considerat ca nu functioneaza cum ne-am dori, si am decis sa implementam altfel, dar ideea in sine e aceeasi.
+Adancimea minima este 6 si ajunge pana la 8 in functie de runda curenta. (am testat astfel incat sa nu luam TLE cu mai multi boti)

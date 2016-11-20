@@ -1,0 +1,53 @@
+/* APOSTOAE Andrei-Alexandru 321CB */
+
+Introducere
+Am implementat tema 3 plecand de la laboratorul de TCP cu multiplexare si laboratorul de http (am folosit versiunea 1.0).
+Am reutilizat mult cod de la tema 2, si deoarece pentru inputurile din problema, viteza de executie nu este importanta, ci mai degraba viteza de transfer client-server http si client-server local, mi-am permis sa utilizez ca structura de date principala o lista de stringuri (char **). In ea salvez liste de fisiere, utilizatori, etc.
+
+
+Exemplu utilizare
+./server -p 15000
+download http://www.cs.stir.ac.uk/~kjt/general/web.html
+download http://www.cs.stir.ac.uk/~kjt/home.html
+download http://www.cs.stir.ac.uk/~kjt/general/scotland.html
+download http://www.cs.stir.ac.uk/~kjt/general/univ.html
+download http://www.cs.stir.ac.uk/~kjt/research/clove.html
+download http://ocw.cs.pub.ro/courses/pa/laboratoare/laborator-02
+download http://www.cs.stir.ac.uk/~kjt/research/finite.html
+
+./client -a 127.0.0.1 -p 15000 -o client1
+./client -a 127.0.0.1 -p 15000 -o client2
+./client -a 127.0.0.1 -p 15000 -o client3
+./client -a 127.0.0.1 -p 15000 -o client4
+./client -a 127.0.0.1 -p 15000 -o client5
+
+In acest moment incepe downloadul propriu-zis, iar outputurile se vad in loguri (terminal, respectiv logurile respective).
+
+
+Ce am implementat
+* comenzile download, status, exit
+* utilizarea fisierele de logging 
+* modul default: se introduce o lista de linkuri html, iar atunci cand serverul detecteaza 5 clienti, distribuie linkurile in felul urmator:
+	-> daca sunt mai putine fisiere in coada decat clienti, se trimit comenzile primilor clienti, iar ceilalti asteapta
+	-> daca sunt in numar egal, se trimite cate o comanda fiecarui client
+	-> daca sunt mai multe fisiere decat clienti, se trimite fiecarui client cate o comanda, se asteapta raspuns de la fiecare pentru a nu se crea overflow, se scrie in fisier raspunsul, dupa care se reimparte restul de linkuri in mod analog
+* codul de baza si pentru modurile everything si recursive
+	-> clientul cand trimite fisierul html, trimite inainte de header pathul, deoarece nu se garanteaza ca serverul primeste informatia in ordine, apoi o lista de fisiere parsate, care indeplinesc conditiile din enunt
+	-> daca se primeste un fisier ca link, se descarca local pe client, lipsind partea in care fisierul este trimis pe bucati catre server
+* exitul automat la finalul downloadurilor, care anunta fiecare client, asteapta o secunda, si apoi inchide serverul
+* mesaje relevante pentru toate comenzile
+
+
+Ce nu am implementat
+* modul everything: trimiterea fisierelor de la clienti la server (fisierele se descarca, dar sunt salvate in client, nu in server, cum ar trebui)
+* modul recursive: citirea listei din header, selectarea fisierelor html si reintroducerea lor in lista de downloaduri
+
+
+
+Concluzie
+Imi pare rau ca datorita perioadei aglomerate, nu am avut timp sa implementez tot, desi eram foarte aproape. Mi s-a parut o tema interesanta, cu singurul dezavantaj faptul ca inainte de deadline cu putin timp apareau modificari pe forum la enunt, si la un moment dat am pierdut sirul a cum e ok si cum nu sa implementez anumite parti ale temei. Am incercat, cand am avut nelamuriri, sa implementez cum consider ca ar trebui sa se intample aceasta relatie server-client-servere http in viata reala.
+
+
+Referinte:
+1) http://stackoverflow.com/questions/2336242/recursive-mkdir-system-call-on-unix
+2) https://www.jmarshall.com/easy/http/

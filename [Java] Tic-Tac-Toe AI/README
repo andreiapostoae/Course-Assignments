@@ -1,0 +1,37 @@
+
+Proiect PA - Ultimate Tic Tac Toe
+Etapa 2
+Echipa: DankBots
+Membrii: Apostoae Andrei
+		 Chiriac Octavian
+		 Chirita Alexandru
+		 Petrescu Andrei
+
+	Pentru aceasta etapa am implementat algoritmul Minimax cu taietura alfa-beta cu predictie de 4 mutari.
+	Am folosit pseudocodul:https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning#Pseudocode
+
+In clasa Field:
+	* updateField - dupa ce simulam o miscare in codul nostru (fara sa o si trimitem platformei), updatam boardul si macroboardul corespunzator, lucru util pentru pasi din recursivitatea Minimaxului
+	* getMicroboard - primeste coordonatele unei mutari si intoarce microboardul din care face parte mutarea
+	* gameOver - intoarce 1/2 pentru victoria unuia dintre playeri , 3 pentru egal si 0 daca nu este inca terminat meciul (pe tot board-ul)
+	* microBoardFinished - face acelasi lucru ca si gameOver doar ca aici este vorba de microboard-ul de 3x3.
+	* listeazaLinii si listeazaLiniiMacro sunt folosite pentru a returna toate liniile pe care se poate castiga un joc (linii, coloane, diagonala principala si diagonala secundara)
+
+In clasa BotStarter: 
+	* evaluate - este functia de evaluare folosita in algoritmul Minimax
+	Functia intoarce 100000 pentru victoria noastra, -100000 pentru victoria adversarului. Altfel ia fiecare linie, coloana si diagonala din microboard si verifica daca gaseste elemente alea unui singur jucator si procedeaza astfel:
+	
+		Pentru microboard:
+		* daca eu am o piesa si adversarul niciuna -> +5
+		* daca eu am doua piese si adversarul niciuna -> +50
+		* daca el are o piesa si eu niciuna -> -5
+		* daca el are doua piese si eu niciuna -> -50
+
+		Pentru macroboard:
+		* daca eu am o piesa si adversarul niciuna -> +1000
+		* daca eu am doua piese si adversarul niciuna -> +5000
+		* daca el are o piesa si eu niciuna -> -1000
+		* daca el are doua piese si eu niciuna -> -5000
+
+	* deepCopy - este folosit pentru a copia board-ul pentru evitarea modificarii board-ului in pasii de recursivitate ai algoritmului Minimax.
+

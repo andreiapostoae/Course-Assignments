@@ -1,0 +1,56 @@
+/* APOSTOAE Andrei-Alexandru - 321CB */
+
+Functiile implementate in tema mea:
+-client:login
+-client:logout
+-client:share
+-client:unshare
+-client:getuserlist
+-client:getfilelist
+-client:delete
+-client:quit
+-server:quit
+
+Important: Desi outputul in loguri este cel dorit in enunt, in consola, in general, apar mesaje corespunzatoare si relevante pentru fiecare comanda executata, dar care nu coincid cu cerinta, deoarece acest lucru nu se cere. In aceasta idee, doresc a nu se lua in considerare ceea ce afiseaza terminalul ca fiind outputul cerut, ci doar o reprezentare pentru a face executia instructiunilor mai logica.
+
+Structura de baza de care m-am folosit a fost un hashmap implementat mai primitiv. Acesta este reprezentat de un vector de structuri de forma (char*, char*). Il folosesc pentru a retine perechi de usernameuri si parole, usernameuri si fisiere, fisiere si tipuri (shared/private), socketi si usernameuri.
+Functiile add_file si remove_file adauga elemente noi de tip pair in aceste hashmapuri. Introducerea se face mereu la sfarsit, iar stergerea se face inlocuind elementul dorit cu ultimul, si realocand la (size - 1) elemente.
+Marea parte din instructiunile care tin strict de TCP si multiplexare fac parte din rezolvarea mea a laboratorului respectiv, de aceea multe comenzi provin din schelet.
+
+####### SERVER #######
+La executia serverului, se face citirea din fisierele shared_files si users_config. In credentials retin usernameurile si parolele, iar in files retin usernameurile si fisierele shared corespunzatoare. Daca unele fisiere nu se gasesc, desi sunt listate, afisez un mesaj corespunzator in consola (nu si in fisiere de log, evident). De asemenea, imi mai creez un hashmap de fisiere private, in care initial adaug fisierele care nu sunt listate in shared_files, dar sunt prezente in folderele utilizatorilor (conform enuntului, bineinteles). Tot la executie, daca exista utilizatori care nu au foldere create, le creez cu mkdir.
+Spre deosebire de laboratorul mentionat mai sus, am folosit multiplexarea si la server, deoarece in cazul primirii de la tastatura a comenzii "quit", trebuie sa informez clientii, sa-i fac sa se inchida automat, si apoi sa inchid serverul. Am facut asta folosind un vector, client_socket, care retine exact socketii clientilor conectati la un moment dat, iar cand primesc "quit" de la tastatura, trimit mai departe tuturor acestor clienti "quit", astept o secunda, dupa care inchid serverul.
+
+La primirea comenzilor de la clienti, serverul lucreaza astfel:
+
+LOGIN - daca userul si/sau parola sunt gresite, trimit -3
+      - daca sunt corecte, adaug userul in lista de useri activi si trimit 0
+      - daca detectez 3 incercari de login la rand gresite, inchid conexiunea cu clientul respectiv si afisez un mesaj relevant
+
+LOGOUT - trimit 0 dupa ce sterg userul din lista de useri activi
+
+GETUSERLIST - trimit la intervale de 0.005 secunde cate un username pentru a evita overflowul 
+ 
+GETFILELIST - numara sa vada daca exista fisiere 
+	    - daca da, si userul exista, trimite mai intai numarul fisierelor si apoi, la interval de 0.005 secunde cate un fisier, impreuna cu dimensiunea sa si tipul shared/private
+	    - daca userul nu exista, trimite -11
+	    - daca nu exista fisiere, dar userul da, trimite null 
+
+SHARE - trimite 0 in cazul in care fisierul a fost gasit si este privat, iar fisierul devine public
+      - trimite -4 in cazul in care fisierul nu exista in folderul utilizatorului care incearca sa-l faca public
+      - trimite -6 in cazul in care fisierul exista, dar este deja public
+
+UNSHARE - trimite 0 in cazul in care fisierul a fost gasit si este public, iar fisierul devine privat
+	- trimite -4 in cazul in care fisierul nu exista in folderul utilizatorului care incearca sa-l faca privat
+	- trimite -7 in cazul in care fisierul exista, dar este deja privat
+
+DELETE - cauta fisierul in folderul utilizatorului curent si incearca sa il stearga
+       - daca il gaseste, o face si trimite 0
+       - daca nu, trimite -4
+
+###### CLIENT ######
+Fiecare client conectat isi creaza propriul fisier de log in care va scrie.
+Implementarea este destul de simpla: daca nu este niciun utilizator logat, nu se va trimite la server comanda, si se va afisa mesajul "-1 Clientul nu este autentificat" in log. Analog pentru cazul in care un utilizator incearca sa se logheze, desi este logat deja. 
+Clientul nu are de procesat prea multe lucruri, serverul se ocupa de marea parte a programului, iar clientul doar afiseaza mesajele corespunzatoare in fisier si consola.
+
+
